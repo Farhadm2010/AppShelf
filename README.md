@@ -14,6 +14,17 @@ A clean, fast macOS app launcher — a better alternative to Launchpad.
 - ♻️ Restore hidden apps anytime
 - 💾 Layout saves automatically — survives restarts
 - ⌨️ Arrow keys to navigate between pages
+- 🔄 Rescan button — finds newly installed apps without losing your layout
+- 📐 30 apps per page (6×5 grid)
+
+## What's New in v1.1
+
+- Fixed missing apps — now finds all apps including those in subfolders
+- Fixed duplicate apps appearing multiple times
+- Removed system utilities that don't belong in a launcher
+- Fixed page abbreviations — now shows P01, P02... correctly
+- Added rescan button (↺) at bottom left to find newly installed apps
+- Increased apps per page from 18 to 30 (6×5 grid)
 
 ## Install
 
@@ -40,6 +51,7 @@ A clean, fast macOS app launcher — a better alternative to Launchpad.
 | Restore hidden app | Gear icon → click app |
 | Rename page | Click pencil next to page title |
 | New page | Click + next to page dots |
+| Rescan for new apps | Click ↺ button (bottom left) |
 
 ## Build from Source
 
