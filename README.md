@@ -17,6 +17,13 @@ A clean, fast macOS app launcher — a better alternative to Launchpad.
 - 🔄 Rescan button — finds newly installed apps without losing your layout
 - 📐 30 apps per page (6×5 grid)
 
+## What's New in v1.3
+
+- Fixed built-in macOS Utilities (Terminal, Disk Utility, System Information, Activity Monitor, Console, etc.) getting wrongly hidden by the junk-app filter
+- AppShelf now hides itself the moment you launch an app — old Launchpad-style auto-dismiss
+- Fixed a crash when dragging an app to another page
+- Fixed the app becoming unresponsive (no jiggle, no tap-to-launch) after a few drag-and-drops into the same folder
+
 ## What's New in v1.1
 
 - Fixed missing apps — now finds all apps including those in subfolders
