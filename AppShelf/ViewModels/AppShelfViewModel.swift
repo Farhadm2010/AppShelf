@@ -9,6 +9,14 @@ class AppShelfViewModel: ObservableObject {
     @Published var isEditMode: Bool = false
     @Published var openFolderID: UUID? = nil
 
+    // Which direction the page transition should animate: true when the
+    // new page is to the right of the old one (slide in from the right),
+    // false when it's to the left (slide in from the left). Updated by
+    // every navigation method below — goToPage, nextPage, previousPage —
+    // so scrolling, arrow keys, and clicking the page dots all animate
+    // the correct direction instead of always sliding one way.
+    @Published var navigatedForward: Bool = true
+
     let appsPerPage = 24
 
     private var nextPageNumber: Int = 1
@@ -182,17 +190,43 @@ class AppShelfViewModel: ObservableObject {
         NSApp.hide(nil)
     }
 
+    // navigatedForward must be committed to the view hierarchy BEFORE
+    // currentPageIndex changes, or SwiftUI can briefly animate the
+    // transition using the previous (now-stale) direction before
+    // correcting itself — visible as a quick flash in the wrong direction.
+    // Setting them in the same call on the same runloop tick isn't enough;
+    // deferring the index change to the next tick gives SwiftUI a render
+    // pass where only the direction changed, so by the time the index
+    // changes the correct transition is already locked in.
     func goToPage(_ index: Int) {
         guard index >= 0, index < pages.count else { return }
-        currentPageIndex = index
+        guard index != currentPageIndex else { return }
+        navigatedForward = index >= currentPageIndex
+        DispatchQueue.main.async { [weak self] in
+            self?.currentPageIndex = index
+        }
     }
 
     func nextPage() {
-        if currentPageIndex < pages.count - 1 { currentPageIndex += 1 }
+        guard currentPageIndex < pages.count - 1 else { return }
+        navigatedForward = true
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if self.currentPageIndex < self.pages.count - 1 {
+                self.currentPageIndex += 1
+            }
+        }
     }
 
     func previousPage() {
-        if currentPageIndex > 0 { currentPageIndex -= 1 }
+        guard currentPageIndex > 0 else { return }
+        navigatedForward = false
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if self.currentPageIndex > 0 {
+                self.currentPageIndex -= 1
+            }
+        }
     }
 
     func toggleEditMode() {

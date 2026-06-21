@@ -31,8 +31,8 @@ struct ContentView: View {
                         onShowRestore: { showRestore = true }
                     )
                     .transition(.asymmetric(
-                        insertion: .move(edge: .trailing),
-                        removal: .move(edge: .leading)
+                        insertion: .move(edge: vm.navigatedForward ? .trailing : .leading),
+                        removal: .move(edge: vm.navigatedForward ? .leading : .trailing)
                     ))
                     .id(vm.currentPageIndex)
                     .animation(.easeInOut(duration: 0.25), value: vm.currentPageIndex)
@@ -100,6 +100,26 @@ struct ContentView: View {
                     .zIndex(20)
             }
         }
+        .pagingScroll(
+            onSwipeLeft: {
+                // Deferred: the NSEvent local monitor in ScrollPagingView
+                // can fire while SwiftUI is mid-update. Mutating @Published
+                // properties (even indirectly, via cleanupOnPageChange's
+                // removeEmptyPages) synchronously from there triggers
+                // "Publishing changes from within view updates is not
+                // allowed." Hopping to the next runloop tick avoids it.
+                DispatchQueue.main.async {
+                    vm.cleanupOnPageChange()
+                    vm.nextPage()
+                }
+            },
+            onSwipeRight: {
+                DispatchQueue.main.async {
+                    vm.cleanupOnPageChange()
+                    vm.previousPage()
+                }
+            }
+        )
         .focusable()
         .onKeyPress(.leftArrow) {
             vm.cleanupOnPageChange()
