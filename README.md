@@ -13,9 +13,15 @@ A clean, fast macOS app launcher — a better alternative to Launchpad.
 - 🗑️ Hide apps you don't need
 - ♻️ Restore hidden apps anytime
 - 💾 Layout saves automatically — survives restarts
-- ⌨️ Arrow keys to navigate between pages
+- ⌨️ Arrow keys or scroll/trackpad swipe to navigate between pages
 - 🔄 Rescan button — finds newly installed apps without losing your layout
 - 📐 30 apps per page (6×5 grid)
+
+## What's New in v1.4
+
+- Scroll or trackpad-swipe left/right to flip between pages — old Dock/Launchpad-style navigation, in addition to arrow keys and clicking the page dots
+- Works with both trackpads and plain scroll-wheel mice
+- Fixed page transitions always sliding the same direction regardless of which way you navigated
 
 ## What's New in v1.3
 
@@ -49,6 +55,7 @@ A clean, fast macOS app launcher — a better alternative to Launchpad.
 
 | Action | How |
 |--------|-----|
+| Switch pages | Arrow keys, scroll/trackpad swipe, or click a page dot |
 | Launch app | Single click |
 | Enter edit mode | Long press anywhere |
 | Reorder apps | Drag and drop |
